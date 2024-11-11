@@ -170,6 +170,14 @@ async function seedRevenue() {
 }
 
 export async function GET() {
+  try {
+    client.connect();
+    console.log("connected");
+
+    await client
+      .query(`select now()`)
+      .catch((err: any) => console.error("seed error", err.stack));
+  } catch {}
   return Response.json({
     message:
       "Uncomment this file and remove this line. You can delete this file when you are finished.",
