@@ -51,14 +51,15 @@
 			},
 			// 拡張機能を追加
 			"extensions": [
-        		"oven.bun-vscode",
-				"MS-CEINTL.vscode-language-pack-ja", // Visual Studio Codeの日本語言語パック
-				"dbaeumer.vscode-eslint", // ESLint
-				"esbenp.prettier-vscode", // Prettier
-				"formulahendry.auto-rename-tag", // Auto Rename Tag
-				"eamodio.gitlens", // GitLens
-				"bradlc.vscode-tailwindcss"	// Tailwind CSS IntelliSense
-			]
+        "oven.bun-vscode",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "formulahendry.auto-rename-tag",
+        "eamodio.gitlens",
+        "bradlc.vscode-tailwindcss",
+        "mhutchie.git-graph"
+      ]
 		}
 	}
 }
