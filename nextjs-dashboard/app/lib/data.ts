@@ -167,15 +167,15 @@ export async function fetchFilteredInvoices(
         FROM invoices
         JOIN customers ON invoices.customer_id = customers.id
         WHERE
-          customers.name ILIKE ${`%${query}%`} OR
-          customers.email ILIKE ${`%${query}%`} OR
-          invoices.amount::text ILIKE ${`%${query}%`} OR
-          invoices.date::text ILIKE ${`%${query}%`} OR
-          invoices.status ILIKE ${`%${query}%`}
+          customers.name ILIKE $1 OR
+          customers.email ILIKE $2 OR
+          invoices.amount::text ILIKE $3 OR
+          invoices.date::text ILIKE $4 OR
+          invoices.status ILIKE $5
         ORDER BY invoices.date DESC
-        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        LIMIT $6 OFFSET $7
       `,
-      values: [],
+      values: [query, query, query, query, query, ITEMS_PER_PAGE, offset],
     });
 
     return invoices.rows;
@@ -204,12 +204,13 @@ export async function fetchInvoicesPages(query: string) {
         FROM invoices
         JOIN customers ON invoices.customer_id = customers.id
         WHERE
-          customers.name ILIKE ${`%${query}%`} OR
-          customers.email ILIKE ${`%${query}%`} OR
-          invoices.amount::text ILIKE ${`%${query}%`} OR
-          invoices.date::text ILIKE ${`%${query}%`} OR
-          invoices.status ILIKE ${`%${query}%`}
+          customers.name ILIKE $1 OR
+          customers.email ILIKE $2 OR
+          invoices.amount::text ILIKE $3 OR
+          invoices.date::text ILIKE $4 OR
+          invoices.status ILIKE $5
       `,
+      values: [query, query, query, query, query],
     });
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
@@ -239,8 +240,9 @@ export async function fetchInvoiceById(id: string) {
           invoices.amount,
           invoices.status
         FROM invoices
-        WHERE invoices.id = ${id};
+        WHERE invoices.id = $1
       `,
+      values: [id],
     });
 
     const invoice = data.rows.map((invoice) => ({
@@ -316,11 +318,12 @@ export async function fetchFilteredCustomers(query: string) {
         FROM customers
         LEFT JOIN invoices ON customers.id = invoices.customer_id
         WHERE
-          customers.name ILIKE ${`%${query}%`} OR
-            customers.email ILIKE ${`%${query}%`}
+          customers.name ILIKE $1 OR
+            customers.email ILIKE $2
         GROUP BY customers.id, customers.name, customers.email, customers.image_url
         ORDER BY customers.name ASC
         `,
+      values: [query, query],
     });
 
     const customers = data.rows.map((customer) => ({
